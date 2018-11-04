@@ -1,0 +1,38 @@
+import sys ; sys.path.insert(0, '.') ; sys.path.insert(0, './engine')
+from console import Console
+from logic import Parser
+ 
+STORYBOARD_PATH = 'storyboard.yaml'
+ 
+def title():
+	Console.writeln(""" _   _       _ _                                   _       _                 _ """)
+	Console.writeln("""| | | | __ _| | | _____      _____  ___ _ __      / \   __| |_   _____ _ __ | |_ _   _ _ __ ___""")
+	Console.writeln("""| |_| |/ _` | | |/ _ \ \ /\ / / _ \/ _ \ '_ \    / _ \ / _` \ \ / / _ \ '_ \| __| | | | '__/ _ \ """)
+	Console.writeln("""|  _  | (_| | | | (_) \ V  V /  __/  __/ | | |  / ___ \ (_| |\ V /  __/ | | | |_| |_| | | |  __/""")
+	Console.writeln("""|_| |_|\__,_|_|_|\___/ \_/\_/ \___|\___|_| |_| /_/   \_\__,_| \_/ \___|_| |_|\__|\__,_|_|  \___|""")
+	Console.writeln('\n 2018 - Hermes Passer')
+	Console.writeln("\nDigite 'iniciar' para começar o jogo ou 'ajuda' para outras ações.")
+	Console.writeln("Ao clicar com o mouse o jogo pode ser pausado, tecle enter para ele voltar.")
+     
+def main():
+	import os
+	print(os.get_terminal_size())
+	exit(0)
+	title()
+	while(True):
+		arg = Console.scan()[0]
+		 
+		if (arg == 'iniciar'):
+			Console.scroll_down()
+			Parser(STORYBOARD_PATH).start()
+			break
+		elif (arg == 'ajuda'):
+			Console.writeln("iniciar, sair")
+		elif (arg == 'sair'):
+			exit(0)
+		else:
+			Console.writeln("Ação inválida '%s'. Escreva 'ajuda' para ver as ações." % arg)
+
+if (__name__ == "__main__"):
+	# main()
+	Parser(STORYBOARD_PATH).start()

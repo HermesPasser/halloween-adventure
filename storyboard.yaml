@@ -1,0 +1,15 @@
+#https://codebeautify.org/yaml-validator
+
+main-monologue: |
+    Não está morto aquilo que pode eternamente jazer. Em com eras estranhas, até a morte pode morrer.
+                                                                 H.P Lovecraft, O chamado de Cthulhu.
+main-action:
+    # goto-intro: [empurrar porta, abir porta, abrir] 
+    "abrir, abir porta, empurrar porta": intro
+
+
+intro-monologue: |
+   A porta estava trancada
+
+intro-action:
+    goback: ""
