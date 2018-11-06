@@ -97,7 +97,7 @@ class Parser:
 			self._running = False
 			return True
 		elif command == HELP_INTERN:
-			Console.writedln(".ola ...")#self._actions.get('_helptext', ''))
+			Console.writedln(self._actions.get('_helptext', ''))
 			return True
 		return False
 
@@ -115,7 +115,7 @@ class Parser:
 						
 						write_notfound = False
 						if not found: # command will be None if the text after the verb not match
-							Console.writeln(param + "....")
+							Console.writeln(param)
 						else:
 							self._execute_action(cmd, param)
 			
