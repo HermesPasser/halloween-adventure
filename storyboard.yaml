@@ -39,7 +39,7 @@ main: # cena da chegada no hotel
 	description: | # esssas quotes vão dar ruim?
 		“...mas peço-lhe que traga pessoalmente a papelada, não lhe preocupes com questões de estadia. Você será meu hóspede.”
 
-		E Jonathan Harker entrou num pequeno hotel, era um lucar caloroso e simples, com pessoas riam por todo lado.
+		E Jonathan Harker entrou num pequeno hotel, era um lugar caloroso e simples, com pessoas riam por todo lado.
 
 	ponderar: # ter que tratar nullos, acho que não precisar pois o python não daria indexout, somente retornaria []
 		write = null: Faltam seis horas para o cocheiro chegar.

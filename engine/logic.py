@@ -19,19 +19,19 @@ class Parser:
 	def __init__(self, yaml_path):
 		text = load_yaml(yaml_path)
 		self.yaml_obj = yaml.load(text)
-	
+
 	def start(self):
 		""" Init the engine """
 		self.prev_sec = 'main'
 		self._load_default_actions()
 		self._load_section(self.prev_sec)
-	
+
 	def _load_default_actions(self):
 		self._actions = self.yaml_obj['actions']
 		
 	def _load_section(self, str_section):
-		str_description = self.yaml_obj[str_section]['description']
-		# Console.writedln(str_description.rstrip())
+		str_description = self.yaml_obj[str_section].get('description', "não encontrado")
+		Console.writedln(str_description)
 		
 		self._load_actions(str_section)
 		self.prev_sec = str_section
@@ -40,8 +40,7 @@ class Parser:
 		if command == WRITE_KEYWORD:
 			Console.writeln(param)
 		elif command == GOTO_KEYWORD:
-			print("?")
-			bool_ressult = self._load_section(param)
+			self._load_section(param)
 		
 	def _parse_action(self, user_args, section, action):
 		""" Return the command given and the param """
@@ -62,25 +61,12 @@ class Parser:
 					found = True
 					break
 
-		# print(self._actions.get(key, 'Observar'))
-		# print(self._actions.get(key, None))
 		if not found :#or self._actions.get(key, None) != None: # default message
 			str_param = self._actions[action]
 
 		return (cmd, str_param, found)
 
-	def _load_actions(self, section):	
-		# não esquecer do especial goback que deve ser procurado antes do scan ocorrer
-		# como seria feito isso? eu retornaria uma flag para o metodo anterior?
-		# outra coisa é que não é possivel fazer condinionais no yaml?
-		# pois se eu entro aqui para "pegar uma arma" por exemplo
-		# então a prox vez que entro aqui não deve-se fazer nada
-		
-		# keys = self.yaml_obj[section_action].keys()
-		
-		# if ('goback' in keys):
-		# 	self._load_section(self.prev_sec, False)
-		
+	def _load_actions(self, section):
 		action_keys = list(self.yaml_obj[section].keys())
 		str_inputargs = Console.scan_args()
 		while True:
@@ -92,18 +78,11 @@ class Parser:
 					if str_inputargs[0] == action_key: # the user get the correct verb
 						cmd, param, found = self._parse_action(str_inputargs[1:], section, action_key)
 						
+						write_notfound = False
 						if not found: # command will be None if the text after the verb not match
 							Console.writeln(param)
-							write_notfound = False
 						else:
 							self._execute_action(cmd, param)
-							# continue
-						# else:
-						#  	return # if i'm use break then pass a arg with a number of block to jump
-				# else:
-					# print(action_key)
-					# print(action_key in self._actions.keys())
-					# print(self._actions)
 						
 			if write_notfound:
 				Console.writeln(str_inputargs[0] + ' ' + self._actions['_notfound'])
