@@ -29,7 +29,13 @@ actions:
 	observar: Nada para ver aqui
 	ponderar: Nada para ponderar
 	_notfound: não é um verbo não conhecido
-
+	_exit: sair
+	_help: ajuda
+	_helptext: |
+		"abrir" para abrir algo, "falar" para falar com alguém, "sentar" para sentar-se,
+		"levantar" para levantar-se de algum lugar, "observar" para observar, "ponderar"
+		para pensar sobre algo e "sair" para encerrar o jogo.
+		
 # section
 	# description
 	# action
