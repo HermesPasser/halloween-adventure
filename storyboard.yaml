@@ -1,15 +1,73 @@
-#https://codebeautify.org/yaml-validator
+# This YAML do use \t to ident, the logic.py will replace them by ' ' but is need to everything be 
+# ident with \t.
 
-main-monologue: |
-    Não está morto aquilo que pode eternamente jazer. Em com eras estranhas, até a morte pode morrer.
-                                                                 H.P Lovecraft, O chamado de Cthulhu.
-main-action:
-    # goto-intro: [empurrar porta, abir porta, abrir] 
-    "abrir, abir porta, empurrar porta": intro
+# This motor uses a basic structure of named sections with a element named description to be writed
+# when the section is loaded and elements name with the name of elements of the section actions.
+# The program will search a section named 'main' to use as entry point of the storyboard.
+
+# The action section enum the actions that can be happen on the game and the default mismatch 
+# text
+
+# actions: # must not be like "[foo: bar, f: b] or "- foo: bar" because it tuns this into a list with the PyYml
+	# action-name1: Text that will be writed if a mismatch happen.
+	# action-name2: Text that will be writed if a mismatch happen.
+
+# section-name:
+	# description: A section description tha will be write char by char with delay.
+	
+	# action-name1:
+		# flags: ["flags that change the behaviour of the parser"]
+		# goto: ["text to match with action", scene-to-jump-on-if-matched]
+		# write: # in this case the first if the first argment match then the secound will be displayed in the screen
+			# - "texts, to, match, separed, by, commas": "Text to be displayed if matched"
+
+actions:
+	abrir: Nada para ser aberto
+	falar: Ninguém com quem falar
+	sentar: Nada onde sentar
+	levantar: Não quero me levantar ainda
+	observar: Nada para ver aqui
+	ponderar: Nada para ponderar
+	_notfound: não é um verbo não conhecido
+
+# section
+	# description
+	# action
+		# command: param
+
+main: # cena da chegada no hotel
+	description: | # esssas quotes vão dar ruim?
+		“...mas peço-lhe que traga pessoalmente a papelada, não lhe preocupes com questões de estadia. Você será meu hóspede.”
+
+		E Jonathan Harker entrou num pequeno hotel, era um lucar caloroso e simples, com pessoas riam por todo lado.
+
+	ponderar: # ter que tratar nullos, acho que não precisar pois o python não daria indexout, somente retornaria []
+		write = null: Faltam seis horas para o cocheiro chegar.
+
+	sentar:
+		goto = na cadeira: hotel-cena-cadeira
+
+	observar:
+		write = local, o local: O hotel estar cheio de pessoas, você vê somente um assento livre no balcão.
+		write = pessoas, as pessoas, homens, os homens: Homens alegres por toda parte, a maioria de aparência rude, de fato homens do campo.
 
 
-intro-monologue: |
-   A porta estava trancada
+hotel-cena-cadeira:
+	description: Estes alegres homens então decidiram mostrar um pouco de hospitalidade e começaram a falar. "Para onde está indo?" perguntavam.
 
-intro-action:
-    goback: ""
+	sentar:
+		write = na cadeira: Você já está sentado
+	
+	levantar:
+		write = null: Você tentou levantar porém os homens insistiram que ficasse sentado e conversasse.
+
+	observar:
+		write = Homens de natureza rude, provavelmente trabalham no campo.
+
+	falar:
+		goto = com eles, com os homens: hotel-cena-espanto
+
+hotel-cena-espanto:
+	obervar: |
+		"Para o castelo de Dracula", Jonathan respondeu.
+		continuar plot aqui...

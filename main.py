@@ -1,4 +1,4 @@
-import sys ; sys.path.insert(0, '.') ; sys.path.insert(0, './engine')
+﻿import sys ; sys.path.insert(0, '.') ; sys.path.insert(0, './engine')
 from console import Console
 from logic import Parser
  
@@ -15,9 +15,6 @@ def title():
 	Console.writeln("Ao clicar com o mouse o jogo pode ser pausado, tecle enter para ele voltar.")
      
 def main():
-	import os
-	print(os.get_terminal_size())
-	exit(0)
 	title()
 	while(True):
 		arg = Console.scan()[0]

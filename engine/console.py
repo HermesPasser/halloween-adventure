@@ -1,6 +1,16 @@
 import time
 import os
 
+def str_to_array(str, separator = ' '):
+	raw_args = str.split(separator)
+	final_args = []
+	for arg in raw_args:
+		if arg == '':
+			continue
+		arg = arg.strip()
+		final_args.append(arg)
+	return final_args
+
 class Console:
 	""" Note: this is a static class, the delay routines cannot work with multithread """
 	
@@ -12,7 +22,6 @@ class Console:
 	
 	# Input
 	input = ''
-	args = []
 	
 	@classmethod
 	def _clear_output(self):
@@ -74,8 +83,12 @@ class Console:
 	
 	@classmethod
 	def scan(self):
-		""" Write the prompt '>' and get the user key """
+		""" Write the prompt '>' and get the user input in lower case"""
 		self.write('\n> ')
 		self.input = input().strip().lower()
-		self.args = self.input.split(' ')
-		return self.args
+		return self.input
+
+	@classmethod
+	def scan_args(self):	
+		""" Write the prompt '>' and get the user input in lower case formatted in arguments """
+		return str_to_array(self.scan())
