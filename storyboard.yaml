@@ -71,3 +71,6 @@ hotel-cena-espanto:
 	obervar: |
 		"Para o castelo de Dracula", Jonathan respondeu.
 		continuar plot aqui...
+
+	falar:
+		end = ola: funfando

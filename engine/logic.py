@@ -7,9 +7,12 @@ from console import Console, str_to_array
 
 # customizar futuro vocabulario de erro deixando ele como uma var static ou talvez deixarndo clusula no storyboard?	
 
+# verificar se é possivel metch nulo
+
 WRITE_KEYWORD = 'write'
 WRITEDESC_KEYWORD = 'writedesc'
 GOTO_KEYWORD = 'goto'
+END_KEYWORD = 'end'
 # LOADFILE = 'load' # not in use, to load a new storyboard
 
 # DESCRIPTION = 'description'
@@ -28,7 +31,8 @@ class Parser:
 		self.return_load_section = False # Tells that is need to go back there to load a new action (avoiding push a load_section above another in the stack)
 		self.curr_sec = 'main'
 		self._load_default_actions()
-		while True:
+		self._running = True
+		while self._running:
 			self.return_load_section = False
 			self._load_section(self.curr_sec)
 
@@ -49,6 +53,9 @@ class Parser:
 		elif command == GOTO_KEYWORD:
 			self.curr_sec = param
 			self.return_load_section = True
+		elif command == END_KEYWORD:
+			self.return_load_section = True
+			self._running = False
 		
 	def _parse_action(self, user_args, section, action):
 		""" Return the command given and the param """
