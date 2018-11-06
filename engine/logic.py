@@ -8,7 +8,10 @@ from console import Console, str_to_array
 # customizar futuro vocabulario de erro deixando ele como uma var static ou talvez deixarndo clusula no storyboard?	
 
 WRITE_KEYWORD = 'write'
+WRITEDESC_KEYWORD = 'writedesc'
 GOTO_KEYWORD = 'goto'
+# LOADFILE = 'load' # not in use, to load a new storyboard
+
 # DESCRIPTION = 'description'
 
 def load_yaml(file):
@@ -22,33 +25,38 @@ class Parser:
 
 	def start(self):
 		""" Init the engine """
-		self.prev_sec = 'main'
+		self.return_load_section = False # Tells that is need to go back there to load a new action (avoiding push a load_section above another in the stack)
+		self.curr_sec = 'main'
 		self._load_default_actions()
-		self._load_section(self.prev_sec)
+		while True:
+			self.return_load_section = False
+			self._load_section(self.curr_sec)
 
 	def _load_default_actions(self):
 		self._actions = self.yaml_obj['actions']
 		
 	def _load_section(self, str_section):
-		str_description = self.yaml_obj[str_section].get('description', "não encontrado")
+		str_description = self.yaml_obj[str_section].get('description', "...") # show '...' if no description is found
 		Console.writedln(str_description)
 		
 		self._load_actions(str_section)
-		self.prev_sec = str_section
 
 	def _execute_action(self, command, param):
 		if command == WRITE_KEYWORD:
 			Console.writeln(param)
+		elif command == WRITEDESC_KEYWORD:
+			Console.writedln(param)
 		elif command == GOTO_KEYWORD:
-			self._load_section(param)
+			self.curr_sec = param
+			self.return_load_section = True
 		
 	def _parse_action(self, user_args, section, action):
 		""" Return the command given and the param """
 		# command = texts, to, match: param
 		dict_commands = self.yaml_obj[section][action]
 		str_param = None
-		cmd = None
 		found = False
+		cmd = None
 		for str_command in dict_commands:
 			sign_index = str_command.index('=')
 			cmd = str_command[0:sign_index].strip()
@@ -61,7 +69,7 @@ class Parser:
 					found = True
 					break
 
-		if not found :#or self._actions.get(key, None) != None: # default message
+		if not found : # if the user msg is not on defineds on the storyboard then set to default msg
 			str_param = self._actions[action]
 
 		return (cmd, str_param, found)
@@ -73,7 +81,7 @@ class Parser:
 			write_notfound = True
 
 			for action_key in action_keys:
-				# isso realmente precisava ficar aqui aumentando o nivel de indent? pela logica eu posso retirar a obrigatoriedade de ter actions predefinididas. < fazer isso.
+				# Maybe make this one optional (check if the key is on the denfineds) (it will need to check if the key exists on the _parse_action)
 				if action_key in self._actions: # check if is a valid key
 					if str_inputargs[0] == action_key: # the user get the correct verb
 						cmd, param, found = self._parse_action(str_inputargs[1:], section, action_key)
@@ -83,7 +91,10 @@ class Parser:
 							Console.writeln(param)
 						else:
 							self._execute_action(cmd, param)
-						
+			
+			if self.return_load_section:
+				return
+
 			if write_notfound:
 				Console.writeln(str_inputargs[0] + ' ' + self._actions['_notfound'])
 
