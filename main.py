@@ -1,7 +1,7 @@
 ﻿import sys ; sys.path.insert(0, '.') ; sys.path.insert(0, './engine')
 from console import Console
 from logic import Parser
- 
+
 STORYBOARD_PATH = 'storyboard.yaml'
  
 def title():
@@ -31,5 +31,4 @@ def main():
 			Console.writeln("Ação inválida '%s'. Escreva 'ajuda' para ver as ações." % arg)
 
 if (__name__ == "__main__"):
-	# main()
-	Parser(STORYBOARD_PATH).start()
+	main()

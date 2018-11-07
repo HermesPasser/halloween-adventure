@@ -1,13 +1,6 @@
 ﻿import yaml
 from console import Console, str_to_array
 
-# IMPORTANTE: no lugar de definir as palavras no xml, definir palavras padrão e só definir o que cada uma fará em todos os 
-
-
-# customizar futuro vocabulario de erro deixando ele como uma var static ou talvez deixarndo clusula no storyboard?	
-
-# verificar se é possivel metch nulo
-
 WRITE_KEYWORD = 'write'
 WRITEDESC_KEYWORD = 'writedesc'
 GOTO_KEYWORD = 'goto'
@@ -15,9 +8,6 @@ END_KEYWORD = 'end'
 EXIT_INTERN = 'exit' # _exit in the yaml
 HELP_INTERN = 'help' # _help in the yaml and _helptext for the text to be displayed
 # LOADFILE = 'load' # not in use, to load a new storyboard
-
-# acusa '... não é um verbo conhecido' se este verbo não ser usado na cena atual
-
 # DESCRIPTION = 'description'
 
 def load_yaml(file):
@@ -42,14 +32,13 @@ class Parser:
 	def _load_default_actions(self):
 		global HELP_INTERN, EXIT_INTERN
 		self._actions = self.yaml_obj['actions']
-		# load the intern_actions
+		# load the intern actions
 		HELP_INTERN = self._actions.get('_help', None) or HELP_INTERN
 		EXIT_INTERN = self._actions.get('_exit', None) or EXIT_INTERN
 
 	def _load_section(self, str_section):
 		str_description = self.yaml_obj[str_section].get('description', "...") # show '...' if no description is found
 		Console.writedln(str_description.strip())
-		
 		self._load_actions(str_section)
 
 	def _execute_action(self, command, param):
@@ -101,16 +90,31 @@ class Parser:
 			return True
 		return False
 
+	def _get_input(self):
+		array_input = Console.scan_args()
+		if len(array_input) == 0:
+			return self._get_input()
+		return array_input
+
 	def _load_actions(self, section):
 		action_keys = list(self.yaml_obj[section].keys())
-		str_inputargs = Console.scan_args()
+		str_inputargs = self._get_input()
+		str_fsinput = str_inputargs[0]
+
 		while True:
 			write_notfound = True
 
-			for action_key in action_keys:# or action_key:
+			if str_fsinput in self._actions and not str_fsinput in action_keys: # if is a valid action but no one on the section
+				write_notfound = False
+				Console.writeln(self._actions[str_fsinput])
+			
+			for action_key in action_keys:
+				if not write_notfound: # if conditional was true then skip this for
+					break
+
 				# Maybe make this one optional (check if the key is on the denfineds) (it will need to check if the key exists on the _parse_action)
 				if action_key in self._actions: # check if is a valid key
-					if str_inputargs[0] == action_key: # the user get the correct verb
+					if str_fsinput == action_key: # the user get the correct verb
 						cmd, param, found = self._parse_action(str_inputargs[1:], section, action_key)
 						
 						write_notfound = False
@@ -119,14 +123,14 @@ class Parser:
 						else:
 							self._execute_action(cmd, param)
 			
-			if self._exec_intern(str_inputargs[0]): # check and execute if is a intern cmd, return false if not
+			if self._exec_intern(str_fsinput): # check and execute if is a intern cmd, return false if not
 				write_notfound = False
 						
 			if self.return_load_section:
 				return
 
 			if write_notfound:
-				Console.writeln(str_inputargs[0] + ' ' + self._actions['_notfound'])
-
-			str_inputargs = Console.scan_args()
-
+				Console.writeln(str_fsinput + ' ' + self._actions['_notfound'])
+			
+			str_inputargs = self._get_input()
+			str_fsinput = str_inputargs[0]

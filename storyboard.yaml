@@ -35,7 +35,7 @@ actions:
 		"abrir" para abrir algo, "falar" para falar com alguém, "sentar" para sentar-se,
 		"levantar" para levantar-se de algum lugar, "observar" para observar, "ponderar"
 		para pensar sobre algo e "sair" para encerrar o jogo.
-		
+
 # section
 	# description
 	# action
@@ -47,8 +47,8 @@ main: # cena da chegada no hotel
 
 		E Jonathan Harker entrou num pequeno hotel, era um lugar caloroso e simples, com pessoas riam por todo lado.
 
-	ponderar: # ter que tratar nullos, acho que não precisar pois o python não daria indexout, somente retornaria []
-		write = null: Faltam seis horas para o cocheiro chegar.
+	ponderar: # ter que tratar nulos, acho que não precisar pois o python não daria indexout, somente retornaria []
+		write =: Faltam seis horas para o cocheiro chegar.
 
 	sentar:
 		goto = na cadeira: hotel-cena-cadeira
@@ -65,7 +65,7 @@ hotel-cena-cadeira:
 		write = na cadeira: Você já está sentado
 	
 	levantar:
-		write = null: Você tentou levantar porém os homens insistiram que ficasse sentado e conversasse.
+		write =: Você tentou levantar porém os homens insistiram que ficasse sentado e conversasse.
 
 	observar:
 		write = Homens de natureza rude, provavelmente trabalham no campo.
@@ -77,6 +77,3 @@ hotel-cena-espanto:
 	obervar: |
 		"Para o castelo de Dracula", Jonathan respondeu.
 		continuar plot aqui...
-
-	falar:
-		end = ola: funfando
