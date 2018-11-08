@@ -1,5 +1,5 @@
 # Harker
-A simple Interactive Fiction that adapts the first chapter of Bram Stoker's Dracula. The game is in portuguese.
+A simple Interactive Fiction that adapts with a twist the first chapter of Bram Stoker's Dracula. The game is in portuguese.
 
 # Requirements
  - Python 3.7.1

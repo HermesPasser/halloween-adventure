@@ -10,7 +10,8 @@ def title():
 	Console.writeln(""" | |_| |/ _` | '__| |/ / _ \ '__|""")
 	Console.writeln(""" |  _  | (_| | |  |   <  __/ |""")
 	Console.writeln(""" |_| |_|\__,_|_|  |_|\_\___|_|""")
-	Console.writeln('\n 2018 - Hermes Passer (gladiocitrico.blogspot.com)')
+	Console.writeln('\n 2018 - Hermes Passer, baseado em Dracula de Bram Stoker')
+	Console.writeln('site: hermespasser.github.io | código: github.com/hermespasser/harker')
 	Console.writeln("\nDigite 'iniciar' para começar o jogo ou 'ajuda' para outras ações.")
 	Console.writeln("Ao clicar com o mouse o jogo pode ser pausado, tecle enter para ele voltar.")
      
@@ -24,11 +25,11 @@ def main():
 			Parser(STORYBOARD_PATH).start()
 			break
 		elif (arg == 'ajuda'):
-			Console.writeln("iniciar, sair")
-		elif (arg == 'sair'):
+			Console.writeln("iniciar, encerrar")
+		elif (arg == 'encerrar'):
 			exit(0)
 		else:
-			Console.writeln("Ação inválida '%s'. Escreva 'ajuda' para ver as ações." % arg)
+			Console.writeln("Comando inválido '%s'. Escreva 'ajuda' para ver as ações." % arg)
 
 if (__name__ == "__main__"):
 	main()

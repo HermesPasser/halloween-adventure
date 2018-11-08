@@ -20,7 +20,7 @@ class Parser:
 		self.yaml_obj = yaml.load(text)
 
 	def start(self):
-		""" Init the engine """
+		""" Init the engine & main loop """
 		self.return_load_section = False # Tells that is need to go back there to load a new action (avoiding push a load_section above another in the stack)
 		self.curr_sec = 'main'
 		self._load_default_actions()
@@ -98,7 +98,12 @@ class Parser:
 
 	def _load_actions(self, section):
 		action_keys = list(self.yaml_obj[section].keys())
-		str_inputargs = self._get_input()
+
+		if len(action_keys) == 1: # if the section haven't actions (just the description) then finish the script
+			self._exec_intern(EXIT_INTERN)
+			return
+
+		str_inputargs = self._get_input()	
 		str_fsinput = str_inputargs[0]
 
 		while True:
@@ -107,7 +112,7 @@ class Parser:
 			if str_fsinput in self._actions and not str_fsinput in action_keys: # if is a valid action but no one on the section
 				write_notfound = False
 				Console.writeln(self._actions[str_fsinput])
-			
+
 			for action_key in action_keys:
 				if not write_notfound: # if conditional was true then skip this for
 					break
@@ -118,17 +123,17 @@ class Parser:
 						cmd, param, found = self._parse_action(str_inputargs[1:], section, action_key)
 						
 						write_notfound = False
-						if not found: # command will be None if the text after the verb not match
-							Console.writeln(param)
-						else:
+						if found: # where the action is executed
 							self._execute_action(cmd, param)
+						else: # command will be None if the text after the verb not match
+							Console.writeln(param)
 			
-			if self._exec_intern(str_fsinput): # check and execute if is a intern cmd, return false if not
-				write_notfound = False
-						
-			if self.return_load_section:
+			if self.return_load_section: # return to the next iteraction of the main loop
 				return
 
+			if self._exec_intern(str_fsinput): # check and execute if is a intern cmd, return false if not
+				write_notfound = False
+			
 			if write_notfound:
 				Console.writeln(str_fsinput + ' ' + self._actions['_notfound'])
 			

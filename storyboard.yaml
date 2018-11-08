@@ -10,51 +10,53 @@
 
 # actions: # must not be like "[foo: bar, f: b] or "- foo: bar" because it tuns this into a list with the PyYml
 	# action-name1: Text that will be writed if a mismatch happen.
-	# action-name2: Text that will be writed if a mismatch happen.
-
-# section-name:
-	# description: A section description tha will be write char by char with delay.
-	
-	# action-name1:
-		# flags: ["flags that change the behaviour of the parser"]
-		# goto: ["text to match with action", scene-to-jump-on-if-matched]
-		# write: # in this case the first if the first argment match then the secound will be displayed in the screen
-			# - "texts, to, match, separed, by, commas": "Text to be displayed if matched"
-
-actions:
-	abrir: Nada para ser aberto
-	falar: Ninguém com quem falar
-	sentar: Nada onde sentar
-	levantar: Não quero me levantar ainda
-	observar: Nada para ver aqui
-	ponderar: Nada para ponderar
-	_notfound: não é um verbo não conhecido
-	_exit: sair
-	_help: ajuda
-	_helptext: |
-		"abrir" para abrir algo, "falar" para falar com alguém, "sentar" para sentar-se,
-		"levantar" para levantar-se de algum lugar, "observar" para observar, "ponderar"
-		para pensar sobre algo e "sair" para encerrar o jogo.
 
 # section
 	# description
 	# action
 		# command: param
 
+# section-name:
+	# description: A section description tha will be write char by char with delay.
+	
+	# action-name1:
+		# goto = texts, to, match: scene-to-jump-on-if-matched
+		# write = texts, to, match: text to be displayed
+
+actions:
+	abrir: Nada para ser aberto
+	entrar: Nenhum lugar onde entrar.
+	estender: Nada para ser estendido.
+	falar: Ninguém com quem falar.
+	sentar: Nada onde sentar.
+	levantar: Não quero me levantar ainda.
+	observar: Nada para ver aqui.
+	ponderar: Nada para ponderar.
+	responder: Ninguém a quem responder.
+	sair: Nenhum lugar de onde sair.
+	_notfound: não é um verbo não conhecido.
+	_exit: encerrar
+	_help: ajuda
+	_helptext: |
+		verbos > abrir, entrar, estender, falar, sentar, levantar, observar, ponderar, sair;
+		comandos > "sair" para encerrar o jogo.
+
+# ---------------- Chegada na vila e introdução
+
 main: # cena da chegada no hotel
 	description: | # esssas quotes vão dar ruim?
 		“...mas peço-lhe que traga pessoalmente a papelada, não lhe preocupes com questões de estadia. Você será meu hóspede.”
 
-		E Jonathan Harker entrou num pequeno hotel, era um lugar caloroso e simples, com pessoas riam por todo lado.
+		E Jonathan Harker entrou numa pequena estalagem, era um lugar caloroso e simples, com pessoas riam por todo lado.
 
 	ponderar: # ter que tratar nulos, acho que não precisar pois o python não daria indexout, somente retornaria []
 		write =: Faltam seis horas para o cocheiro chegar.
 
 	sentar:
 		goto = na cadeira: hotel-cena-cadeira
-
+		
 	observar:
-		write = local, o local: O hotel estar cheio de pessoas, você vê somente um assento livre no balcão.
+		write = local, o local: A estalagem estar cheio de pessoas, você vê somente um assento livre no balcão.
 		write = pessoas, as pessoas, homens, os homens: Homens alegres por toda parte, a maioria de aparência rude, de fato homens do campo.
 
 
@@ -74,6 +76,123 @@ hotel-cena-cadeira:
 		goto = com eles, com os homens: hotel-cena-espanto
 
 hotel-cena-espanto:
-	obervar: |
+	description: |
 		"Para o castelo de Dracula", Jonathan respondeu.
-		continuar plot aqui...
+		
+		Repentinamente a estalagem ficou em silencio, todo mundo começo a fitar Jonathan. Este que não entendeu o motivo de todos parecerem tão assustados.
+
+	falar:
+		responder = o homem, ele,: | # essa virgula vai fazer ele responder ao nulo, certo?
+			“Não vá lá” alguém disse.
+
+			“Eu tenho que ir, é trabalho.” Jonathan replicou.
+
+		ponderar:
+			write := Faltava pouco para as seis horas, o tempo realmente passava rápido quando em companhia Jonathan ponderou.
+
+		observar:
+			write =: A porta da saída estava aberta, movendo-se com o vento.
+			write = os homens: Eles começaram a falar novamente, porém, não mais rindo.
+
+		sair:
+			goto = pela porta, da estalagem: hotel-cena-saida
+
+# ---------------- Chegada ao castelo
+
+hotel-cena-saida:
+	description: |
+		A esposa do estaleiro retirou a cruz dourada e colocou sobre minha mão.
+
+		“Pegue isso”, e em seguida, “Existem perigosos no castelo de Dracula, isso pode ajuda-lo”. Jonathan empedurrou a cruz no pescoço escondendo-a por de baixo de suas vestes.
+
+		Bistriz é uma pequena cidade na Transilvânia, este estranho e belo pais cheio de montanhas, bosques e rios passava desapercebido para Jonathan que acabará de deixar a estalagem. Eles estava a observar o cocheiro que descia a estrada usou seu chicote para fazer os cavalos moverem-se. O sol brilhava, havia neve no topo da montanha e o cocheiro continuava a rumar em direção a cidade. Na floresta atrás, um som horrível de lobos uivando enquanto o sol escondia-se lentamente atrás das montanhas.
+
+		"Onde está o ingles? Eu vim pelo conde Dracula!", disse o cocheiro.
+
+	observar:
+		write =: O cocheiro finalmente havia chegado, observado pelos homens da estalagem que vieram assistir.
+		write = o cocheiro: Vestia cartola e vestes negras, parecia estranho na luz da lua.
+		write = a mulher, a esposa do estaleiro: A esposa do estaleiro ficará dentro da estalagem, como se não ousasse sair em tais circunstâncias. 
+		write = os homens: Suas expressões mostravam um misto de espanto e curiosidade ao observar o cocheiro que acabará de chegar. A palavra "vampiro" ecoou entre os sussuros.
+		write = os a carruagem: Uma carruagem simples, movida por quatro cavalos negros.
+	
+	falar:
+		write = com o cocheiro: O chocheiro logo reconheceu Jonathan, que naturalmente descava-se, e pediu para que ele subisse na carruagem.
+	ponderar:
+		write =: A figura que chegará vestia negro e nada dizia. Apontava para a porta da carruagem.
+
+	entrar:
+		goto = na carruagem: montanhas-a-camiho-do-castelo
+
+montanhas-a-camiho-do-castelo:
+	description: |
+		O sol já havia sumido completamente deixando seu lugar para a lua cheia no céu nebuloso. Os cavalos corriam rápido e mais rápido enquanto o cocheiro ria selvagemente.
+
+		De repente a carruagem parou, haviam chegado na entrada do castelo.
+
+	observar:
+		write =: Nada podia ser visto se não os contornos da carruagem. O vidro embaçado garantia uma parcial alienação ao ambiente externo.
+
+	falar:
+		write = com o cocheiro: O cocheiro nada respondia.
+
+	ponderar:
+		write =: O castelo mal podia ser visto pela embaçada janela por causa do breu noturno.
+
+	entrar:
+		goto = na carruagem: entrada-do-castelo
+
+entrada-do-castelo:
+	description: |
+		Jonathan abriu a carruagem e saiu, vislumbrando o grande portão de madeira abrir e um homem alto ficou em frente em sua frente, com cabelos brancos e vestido em preto da cabeça aos pés.
+
+		“Venha sr. Harker, eu sou o conde Dracula” o homem disse enquanto estendia a mão.
+
+	estender:
+		writedesc = a mão, a mão a ele, : Jonathan estendeu prontamente sua mão em resposta ao jesto do conde e em seguida percebendo a frieza desta.
+
+	observar:
+		write = o conde, dracula, o conde dracula, ele: Vestia preto da cabeça aos pés. Era alto, velho e grisalho.
+		writVestia preto da cabeça aos pése = o castelo: Imponente e com um grande portão de madeira.
+	
+	falar:
+		write = com o conde, com o dracula, com o conde dracula, ele: O conde já havia entrado no castelo.
+
+	entrar:
+		goto = no castelo: entrando-no-castelo
+
+entrando-no-castelo:
+	description: |
+		Jonathan entrou no castelo e o Conde trancou cuidadosamente a porta atrás dele e colocou a chave em seu bolso. Em seguida subiu as escadas junto de Jonathan, eles chegaram em um quarto com uma mesa com comida perto da lareira.
+
+	observar:
+		write = o conde, dracula: Seu rosto pálido era iluminado pelas chamas da lareira deixando evidentesuas orelhas que pareciam com as de um gato e seus dentes de aspecto forte como os de um animal, tinha cabelo entre seus longos dedos. Seu inglês era bom.
+
+	ponderar:
+		write =: Depois de falar tanto com o conde, este havia se ausentado deixando Jonathan sozinho. Era quase manhã e Jonathan sentia sono, o que fazia-o fitar o quarto de hospedes deixado para ele perto das escadas.
+
+	entrar:
+		goto = no quarto, no quarto de hospedes: acordando-sozinho-e-trancado
+
+acordando-sozinho-e-trancado:	
+	description: |
+		Jonathan deitou-se e logo dormiu. Uivos podiam ser ouvidos pela janela. Nessa noite ele teve um sonho onde três ninfas o assediavam. Quando acordou, percebeu um amontoado de poeira entorno da came e sentia um calor vindo de seu peito onde estava a cruz dourada que na noite anterior fora dado a ele pela esposa do estaleiro. 
+
+		Incomodado, Jonathan retirou a cruz e levantou.
+
+	observar:
+		write = o quarto, ao redor: No quarto, destacava-se um grande espelho na parede do lado oposto ao que se encontrava a cama onde repousava a cruz dourada. A porta, fechada, estava na parede paralela a janela que permanecia aberta.
+		write = a porta: A porta esta fechada, nenhuma luz era emitida do outro lado.
+		write = a janela: Uma grande janela aberta, as trancas já enferrujadas pela ação do tempo, não servia mais para tranca-la. 
+		goto = o espelho: final-original
+	
+	abrir:
+		write = a porta: Jonathan tentou sem sucesso abrir a porta, alguém havia a trancado. 
+	
+final-original:
+		description: |
+			Jonathan caminha até o espelho onde observa seu semblante refletido. Ele ouve alguma coisa atrás dele, porém ele não se vira sabendo que não havia nada atrás dele, afinal, ele tinha um bom ângulo de visão no reflexo do espelho. Neste momento lembrou-se das palavras das pessoas da estalagem e sentiu vontade de recolocar em meu pescoço a cruz.
+
+			Sete dias depois, Mina, sua noiva, recebeu a notícia que seu noivo havia morrido ao cair da janela do quarto de hospedes do castelo de Dracula ao comtemplar a noite meio acordado. No enterro, passou-se desapercebido as duas pequenas feridas em seu pescoço.
+			
+			FIM
