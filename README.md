@@ -6,3 +6,7 @@ A simple Interactive Fiction that adapts with a twist the first chapter of Bram 
  - PyYaml 3.13 *[1]*
 
 *[1]: use 'pip install pyyaml' to install (require python to work)*
+
+# Usage
+
+Run *python main.py* in a terminal or open with python IDLE and click in Run Module.

@@ -1,5 +1,5 @@
 import time
-import os
+from shutil import get_terminal_size
 
 def str_to_array(str, separator = ' '):
 	raw_args = str.split(separator)
@@ -72,7 +72,12 @@ class Console:
 	@classmethod
 	def scroll_down(self):
 		""" Scroll down all lines """
-		lines = os.get_terminal_size().lines
+		lines = 0
+		try:
+			lines = get_terminal_size().lines
+		except:
+			lines = 10
+			
 		for x in range(0, lines):
 			self.writedln('')	
 	

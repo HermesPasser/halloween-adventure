@@ -27,7 +27,8 @@ class Parser:
 		self._running = True
 		while self._running:
 			self.return_load_section = False
-			self._load_section(self.curr_sec)
+			self._load_description(self.curr_sec)
+			self._load_actions(self.curr_sec)
 
 	def _load_default_actions(self):
 		global HELP_INTERN, EXIT_INTERN
@@ -36,10 +37,9 @@ class Parser:
 		HELP_INTERN = self._actions.get('_help', None) or HELP_INTERN
 		EXIT_INTERN = self._actions.get('_exit', None) or EXIT_INTERN
 
-	def _load_section(self, str_section):
+	def _load_description(self, str_section):
 		str_description = self.yaml_obj[str_section].get('description', "...") # show '...' if no description is found
 		Console.writedln(str_description.strip())
-		self._load_actions(str_section)
 
 	def _execute_action(self, command, param):
 		global HELP_INTERN, EXIT_INTERN
