@@ -39,7 +39,7 @@ actions:
 	_help: ajuda
 	_helptext: |
 		verbos > abrir, entrar, estender, falar, sentar, levantar, observar, ponderar, sair;
-		comandos > "sair" para encerrar o jogo.
+		comandos > "encerrar" para encerrar o jogo.
 
 # ---------------- Chegada na vila e introdução
 
