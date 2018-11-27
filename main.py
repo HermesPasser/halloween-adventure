@@ -18,8 +18,11 @@ def title():
 def main():
 	title()
 	while(True):
-		arg = Console.scan_args()[0]
-		 
+		arg = Console.scan_args() or 1
+		if arg == 1:
+			continue
+		arg = arg[0]
+ 
 		if (arg == 'iniciar'):
 			Console.scroll_down()
 			Parser(STORYBOARD_PATH).start()
@@ -32,4 +35,7 @@ def main():
 			Console.writeln("Comando inválido '%s'. Escreva 'ajuda' para ver as ações." % arg)
 
 if (__name__ == "__main__"):
-	main()
+	try:
+		main()
+	except KeyboardInterrupt:
+		exit(1)
