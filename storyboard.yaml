@@ -80,22 +80,22 @@ hotel-cena-espanto:
 		"Para o castelo de Dracula", Jonathan respondeu.
 		
 		Repentinamente a estalagem ficou em silencio, todo mundo começo a fitar Jonathan. Este que não entendeu o motivo de todos parecerem tão assustados.
-
-	falar:
-		responder = o homem, ele,: | # essa virgula vai fazer ele responder ao nulo, certo?
+	
+	responder:
+		write = o homem, ele,: |
 			“Não vá lá” alguém disse.
 
 			“Eu tenho que ir, é trabalho.” Jonathan replicou.
-
-		ponderar:
+		
+	ponderar:
 			write := Faltava pouco para as seis horas, o tempo realmente passava rápido quando em companhia Jonathan ponderou.
 
-		observar:
-			write =: A porta da saída estava aberta, movendo-se com o vento.
-			write = os homens: Eles começaram a falar novamente, porém, não mais rindo.
+	observar:
+		write =: A porta da saída estava aberta, movendo-se com o vento.
+		write = os homens: Eles começaram a falar novamente, porém, não mais rindo.
 
-		sair:
-			goto = pela porta, da estalagem: hotel-cena-saida
+	sair:
+		goto = pela porta, da estalagem: hotel-cena-saida
 
 # ---------------- Chegada ao castelo
 
