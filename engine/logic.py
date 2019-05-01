@@ -1,4 +1,5 @@
-﻿import yaml
+﻿# -*- coding: utf-8 -*-
+import yaml
 from console import Console, str_to_array
 
 WRITE_KEYWORD = 'write'
@@ -132,6 +133,19 @@ class Parser:
 				return
 
 			if self._exec_intern(str_fsinput): # check and execute if is a intern cmd, return false if not
+			
+				"""TODO:
+				  Statement to be add to be able to exit game witout need to enter in the first return_load_section. 
+				  
+				  No ideia if this will broke somethin, and i probable put the first return_load_section above
+				for a reason, later test if i can move the statement for above or if the statement below
+				broke something
+				
+				  To prevents this kind of problem of happen in the future need to broke this method into small pieces
+				"""
+				if self.return_load_section:
+					return
+				
 				write_notfound = False
 			
 			if write_notfound:
