@@ -1,4 +1,5 @@
-﻿import sys ; sys.path.insert(0, '.') ; sys.path.insert(0, './engine')
+﻿# problem adding path in packaged version, use normal module instead
+import sys ; sys.path.insert(0, '.') ; sys.path.insert(0, './engine')
 from console import Console
 from logic import Parser
 
@@ -30,12 +31,12 @@ def main():
 		elif (arg == 'ajuda'):
 			Console.writeln("iniciar, encerrar")
 		elif (arg == 'encerrar'):
-			exit(0)
+			break
 		else:
 			Console.writeln("Comando inválido '%s'. Escreva 'ajuda' para ver as ações." % arg)
 
 if (__name__ == "__main__"):
 	try:
 		main()
-	except KeyboardInterrupt:
-		exit(1)
+	except (KeyboardInterrupt, EOFError):
+		sys.exit(1) # without sys. doesn't work with pyinstaller
