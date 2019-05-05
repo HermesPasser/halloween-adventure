@@ -35,11 +35,15 @@ actions:
 	responder: Ninguém a quem responder.
 	sair: Nenhum lugar de onde sair.
 	_notfound: não é um verbo não conhecido.
+	_load: carregar
+	_save: salvar
 	_exit: encerrar
 	_help: ajuda
 	_helptext: |
 		verbos > abrir, entrar, estender, falar, sentar, levantar, observar, ponderar, sair;
 		comandos > "encerrar" para encerrar o jogo.
+					"salvar" para salvar o seu progresso
+					"carregar" para carregar um jogo salvo
 
 # ---------------- Chegada na vila e introdução
 
